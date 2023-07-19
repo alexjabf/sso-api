@@ -1,16 +1,18 @@
-source "https://rubygems.org"
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.2"
+ruby '3.2.2'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.0.6"
+gem 'rails', '~> 7.0.4', '>= 7.0.4.3'
 
-# Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 1.4"
+# Use postgresql as the database for Active Record
+gem 'pg', '~> 1.1'
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "~> 5.0"
+gem 'puma', '~> 5.0'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
@@ -25,24 +27,53 @@ gem "puma", "~> 5.0"
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
-gem "bootsnap", require: false
+gem 'bootsnap', require: false
 
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+# Use Active Storage variants [https://guides.rubyonrails.org/active_sto  `rage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
+gem 'active_storage_validations' # ActiveStorage validations
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-# gem "rack-cors"
+gem 'rack-cors', require: 'rack/cors'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem 'annotate' # Annotate Rails classes with schema and routes info
+  gem 'bullet' # Help to kill N+1 queries and unused eager loading
+  gem 'byebug' # Debugging tool
+  gem 'database_cleaner-active_record'
+  gem 'debug', platforms: %i[mri mingw x64_mingw]
+  gem 'factory_bot_rails' # Fixture replacement
+  gem 'faker' # Generate fake data for testing
+  gem 'pry-byebug' # Debugging tool
+  gem 'pry-rails' # Debugging tool
+  gem 'rails-controller-testing' # Test controllers
+  gem 'rspec-rails' # Test framework
+  gem 'rubocop' # Code style checker and formatter
+  gem 'rubocop-discourse' # Code style checker and formatter
+  gem 'rubocop-rails' # Code style checker and formatter
 end
 
-group :development do
-  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
-  # gem "spring"
+group :test do
+  gem 'shoulda-matchers', '~> 5.0' # Testing library for Rails
+  gem 'state_machines-rspec', '~> 0.6.0' # RSpec matchers for state_machines
 end
 
+# AUTHENTICATION AND PERMISSIONS
+gem 'cancancan' # Authorization
+gem 'jwt' # JSON Web Tokens
+
+# SECURITY
+gem 'dotenv-rails' # Manage environment variables
+gem 'rbnacl' # Encryption
+
+# FUNCTIONALITY
+gem 'email_validator' # Validates email addresses
+gem 'jsonapi-serializer' # JSON API serialization
+
+# DEBBUGING
+gem 'bugsnag' # Error monitoring
+gem 'colorize' # Text colorizationgem 'memory_profiler' # Memory usage analysis

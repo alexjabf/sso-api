@@ -53,3 +53,8 @@ storage/*
 # Ignore webpacker compiled packs.
 /public/packs
 /node_modules
+
+# Ignore environment files which may contain sensitive data.
+.env
+.env.*
+.env
