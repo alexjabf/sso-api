@@ -15,7 +15,7 @@ module Api
       end
 
       def show
-        render json: serializer.new(@role, { params: { include_associations: true } })
+        render json: serializer.new(@role)
       end
 
       def create
