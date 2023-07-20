@@ -7,7 +7,6 @@ module Api
     # This class manages roles through the API.
     # It provides actions for creating, updating, and deleting roles.
     class RolesController < ApplicationController
-      before_action :authenticate_user!
       before_action :set_role, only: %i[show update destroy]
 
       def index

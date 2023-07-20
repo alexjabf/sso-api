@@ -10,9 +10,9 @@
 #  last_name          :string(50)       not null
 #  username           :string(30)       not null
 #  email              :string(100)      not null
-#  omniauth_provider  :string(20)
-#  uid                :string(100)
-#  encrypted_password :string           not null
+#  omniauth_provider  :string(120)
+#  uid                :string(120)
+#  encrypted_password :string(120)      not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
@@ -186,6 +186,7 @@ RSpec.describe User do
 
   describe 'associations' do
     it { is_expected.to belong_to(:role) }
+    it { is_expected.to have_many(:tokens) }
   end
 
   describe '#encrypt_password' do
@@ -193,6 +194,50 @@ RSpec.describe User do
 
     it 'encrypts the password' do
       expect(user.password_confirmation).not_to be_nil
+    end
+  end
+
+  describe '#authenticate' do
+    let(:user) { create(:user, password: 'password', password_confirmation: 'password') }
+
+    it 'returns true for correct password' do
+      expect(user.authenticate('password')).to be true
+    end
+
+    it 'returns false for incorrect password' do
+      expect(user.authenticate('wrong_password')).to be false
+    end
+  end
+
+  describe '#generate_authentication_token' do
+    let(:user) { create(:user) }
+
+    it 'generates an authentication token' do
+      token = user.generate_authentication_token
+      expect(token).not_to be_nil
+    end
+  end
+
+  describe '#invalidate_authentication_token' do
+    let(:user) { create(:user) }
+    let(:authentication_token) { 'sample_token' }
+
+    it 'invalidates the authentication token' do
+      user.invalidate_authentication_token(authentication_token)
+      expect(user.tokens.last.authentication_token).to eq(authentication_token)
+    end
+  end
+
+  describe '.invalid_token?' do
+    let(:user) { create(:user) }
+
+    it 'returns true for invalid token' do
+      create(:token, user:, authentication_token: 'sample_token')
+      expect(user.invalid_token?('sample_token')).to be true
+    end
+
+    it 'returns false for valid token' do
+      expect(user.invalid_token?('valid_token')).to be false
     end
   end
 

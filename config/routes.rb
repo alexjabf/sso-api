@@ -11,6 +11,9 @@ Rails.application.routes.draw do
       resources :roles
       resources :clients
       resources :users
+      post 'sign_up', to: 'registrations#sign_up'
+      post 'login', to: 'sessions#login'
+      delete 'logout', to: 'sessions#logout'
     end
   end
 end

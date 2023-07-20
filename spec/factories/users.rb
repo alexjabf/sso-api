@@ -10,9 +10,9 @@
 #  last_name          :string(50)       not null
 #  username           :string(30)       not null
 #  email              :string(100)      not null
-#  omniauth_provider  :string(20)
-#  uid                :string(100)
-#  encrypted_password :string           not null
+#  omniauth_provider  :string(120)
+#  uid                :string(120)
+#  encrypted_password :string(120)      not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
