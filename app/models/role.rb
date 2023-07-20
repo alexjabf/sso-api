@@ -12,7 +12,7 @@
 #  updated_at  :datetime         not null
 #
 class Role < ApplicationRecord
-  # has_many :users, dependent: :destroy
+  has_many :users, dependent: :destroy
   validates :name, presence: true, uniqueness: true, length: { in: 1..50 }
   validates :description, presence: true, length: { in: 1..5000 }
   enum role_type: { admin: 1, client_admin: 2, default_user: 3 }

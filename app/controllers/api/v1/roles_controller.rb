@@ -39,7 +39,8 @@ module Api
       def serializer = RoleSerializer
 
       def set_role
-        @role = Role.find(params[:id])
+        relation = action_name == 'show' ? Role.preload(:users) : Role
+        @role = relation.find(params[:id])
       end
 
       def role_params

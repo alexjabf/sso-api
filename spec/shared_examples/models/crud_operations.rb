@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.shared_examples 'model crud operations' do |symbol|
   let!(:object_one) { create(symbol) }
   let!(:object_two) { create(symbol) }
-  let(:excluded_attributes) { %w[id created_at updated_at password] }
+  let(:excluded_attributes) { %w[id created_at updated_at encrypted_password] }
 
   it 'creates a new object' do
     expect do
