@@ -10,7 +10,7 @@ module Api
       before_action :set_role, only: %i[show update destroy]
 
       def index
-        data = Role.all
+        data = Role.records(params:)
         render json: serializer.new(data, links: paginate(url: api_v1_roles_url, data:))
       end
 
