@@ -67,7 +67,7 @@ gem 'cancancan' # Authorization
 gem 'jwt' # JSON Web Tokens
 
 # SECURITY
-gem 'dotenv-rails' # Manage environment variables
+gem 'dotenv-rails' # Manage environment variables.rb
 gem 'rbnacl' # Encryption
 
 # FUNCTIONALITY

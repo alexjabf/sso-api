@@ -37,3 +37,13 @@ Role.create(
                'related to services offered by the app.',
   role_type: 3
 )
+
+Rails.logger.debug 'Creating clients...'
+50.times do
+  Client.create(
+    name: Faker::Company.name,
+    description: Faker::Lorem.paragraph,
+    client_code: Faker::Alphanumeric.alphanumeric(number: 10),
+    custom_fields: CUSTOM_FIELDS.shuffle.take(rand(1..CUSTOM_FIELDS.length))
+  )
+end
