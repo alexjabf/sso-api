@@ -73,6 +73,7 @@ gem 'rbnacl' # Encryption
 # FUNCTIONALITY
 gem 'email_validator' # Validates email addresses
 gem 'jsonapi-serializer' # JSON API serialization
+gem 'will_paginate', '~> 3.3' # Pagination
 
 # DEBBUGING
 gem 'bugsnag' # Error monitoring
