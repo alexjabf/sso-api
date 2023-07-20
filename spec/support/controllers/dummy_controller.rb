@@ -2,8 +2,13 @@
 
 RSpec.shared_context 'with dummy controller' do
   controller(ApplicationController) do
+    include Authentication
+
     def profile
-      render json: { message: 'Rendering profile' }, status: :ok
+      authenticate_user!
+      return unless sign_in?
+
+      render json: { message: 'Authenticated' }, status: :ok
     end
 
     def index

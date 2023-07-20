@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::RolesController do
   include SerializerSupport
+  include_context 'with authenticated user'
 
   describe 'GET #index' do
     it 'returns a success response' do

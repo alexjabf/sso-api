@@ -36,4 +36,38 @@ RSpec.describe ApplicationController do
       expect(response.body).to match(/message/)
     end
   end
+
+  describe 'when the request rises CanCan::AccessDenied' do
+    let(:message) { 'You are not authorized to access this page.' }
+
+    before do
+      allow(controller).to receive(:show).and_raise(CanCan::AccessDenied.new(message))
+      get :show, params: { id: 1 }
+    end
+
+    it 'returns an unauthorized status' do
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it 'returns an error message' do
+      expect(response.body).to match(/message/)
+    end
+  end
+
+  describe 'invalid_authorization' do
+    let(:message) { 'Invalid authorization token.' }
+
+    before do
+      request.cookies[:Authorization] = nil
+      get :create
+    end
+
+    it 'returns unauthorized status' do
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it 'returns an error message' do
+      expect(response.body).to match(/message/)
+    end
+  end
 end

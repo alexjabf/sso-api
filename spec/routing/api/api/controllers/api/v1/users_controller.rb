@@ -7,7 +7,6 @@ module Api
     # This class manages users through the API.
     # It provides actions for creating, updating, and deleting users.
     class UsersController < ApplicationController
-      before_action :authenticate_user!
       before_action :set_user, only: %i[show update destroy]
 
       def index
