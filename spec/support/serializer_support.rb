@@ -12,7 +12,7 @@ module SerializerSupport
       data: {
         id: object.id.to_s,
         type: @type,
-        attributes: record_attributes(object.attributes)
+        attributes: record_attributes(object)
       }
     }
     object.errors.present? ? record_errors(object, data) : data
@@ -21,9 +21,9 @@ module SerializerSupport
 
   private
 
-  def record_attributes(attributes)
-    attributes.deep_symbolize_keys!.transform_values! { |value| value }
-    return unless @type == 'users'
+  def record_attributes(object)
+    attributes = object.attributes.deep_symbolize_keys!.transform_values! { |value| value }
+    return attributes unless @type == 'users'
 
     attributes.except!(:encrypted_password).merge!(role_name: object.role.name)
   end
