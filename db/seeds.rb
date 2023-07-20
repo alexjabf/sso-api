@@ -47,3 +47,21 @@ Rails.logger.debug 'Creating clients...'
     custom_fields: CUSTOM_FIELDS.shuffle.take(rand(1..CUSTOM_FIELDS.length))
   )
 end
+
+Rails.logger.debug 'Creating users...'
+100.times do
+  password = Faker::Internet.password(min_length: 8, max_length: 20)
+  User.create(
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    email: Faker::Internet.email,
+    username: "username#{Faker::Number.within(range: 1..999_999)}",
+    password:,
+    password_confirmation: password,
+    role: Role.all.sample
+  )
+end
+
+User.first.update(email: 'admin@email.com', password: ENV.fetch('DEFAULT_PASSWORD'), role_id: 1)
+User.second.update(email: 'client_admin@email.com', password: ENV.fetch('DEFAULT_PASSWORD'), role_id: 2)
+User.third.update(email: 'default_user@email.com', password: ENV.fetch('DEFAULT_PASSWORD'), role_id: 3)

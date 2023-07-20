@@ -106,6 +106,10 @@ RSpec.describe Role do
     end
   end
 
+  describe 'associations' do
+    it { is_expected.to have_many(:users) }
+  end
+
   describe 'CRUD operations' do
     it_behaves_like 'model crud operations', :role do
       def model = described_class

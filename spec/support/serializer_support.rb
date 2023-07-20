@@ -7,11 +7,12 @@
 # compare the response body with the serialized object.
 module SerializerSupport
   def serialize(object)
+    @type = object.class.name.downcase.pluralize
     data = {
       data: {
         id: object.id.to_s,
-        type: object.class.name.downcase.pluralize,
-        attributes: record_attributes(object.attributes)
+        type: @type,
+        attributes: record_attributes(object)
       }
     }
     object.errors.present? ? record_errors(object, data) : data
@@ -20,8 +21,11 @@ module SerializerSupport
 
   private
 
-  def record_attributes(attributes)
-    attributes.deep_symbolize_keys!.except(:status, :password, :authentication_token).transform_values { |value| value }
+  def record_attributes(object)
+    attributes = object.attributes.deep_symbolize_keys!.transform_values! { |value| value }
+    return attributes unless @type == 'users'
+
+    attributes.except!(:encrypted_password).merge!(role_name: object.role.name)
   end
 
   def record_errors(record, data)

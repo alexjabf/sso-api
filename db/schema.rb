@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_19_233214) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_20_013837) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -33,4 +33,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_233214) do
     t.index ["name"], name: "index_roles_on_name", unique: true
   end
 
+  create_table "users", force: :cascade do |t|
+    t.bigint "role_id", default: 3, null: false
+    t.string "first_name", limit: 50, null: false
+    t.string "last_name", limit: 50, null: false
+    t.string "username", limit: 30, null: false
+    t.string "email", limit: 100, null: false
+    t.string "omniauth_provider", limit: 120
+    t.string "uid", limit: 120
+    t.string "encrypted_password", limit: 120, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["role_id"], name: "index_users_on_role_id"
+    t.index ["username"], name: "index_users_on_username", unique: true
+  end
+
+  add_foreign_key "users", "roles"
 end
