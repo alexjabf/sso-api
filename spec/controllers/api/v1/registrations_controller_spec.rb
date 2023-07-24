@@ -16,7 +16,8 @@ RSpec.describe Api::V1::RegistrationsController do
             username: 'username',
             password: 'FakePassword123',
             password_confirmation: 'FakePassword123',
-            role_id: create(:role).id
+            role_id: create(:role).id,
+            client_id: create(:client).id
           }
         }
       end
@@ -61,6 +62,7 @@ RSpec.describe Api::V1::RegistrationsController do
       let(:expected_response) do
         {
           role: ['must exist'],
+          client: ['must exist'],
           first_name: ["can't be blank", 'is too short (minimum is 1 character)'],
           last_name: ["can't be blank", 'is too short (minimum is 1 character)'],
           username: ["can't be blank", 'is too short (minimum is 8 characters)', 'is invalid'],

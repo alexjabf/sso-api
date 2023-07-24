@@ -18,8 +18,8 @@ module Api
       private
 
       def registration_params
-        params.require(:registration).permit(:first_name, :last_name, :email, :username,
-                                             :password, :password_confirmation, :omniauth_provider, :uid, :role_id)
+        params.require(:registration).permit(:first_name, :last_name, :email, :username, :client_id, :role_id,
+                                             :password, :password_confirmation, :omniauth_provider, :uid)
       end
     end
   end

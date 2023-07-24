@@ -56,5 +56,3 @@ storage/*
 
 # Ignore environment files which may contain sensitive data.
 .env
-.env.*
-.env

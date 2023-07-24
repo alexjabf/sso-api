@@ -4,13 +4,12 @@
 #
 # Table name: clients
 #
-#  id            :bigint           not null, primary key
-#  name          :string(50)       not null
-#  description   :text             not null
-#  client_code   :string(50)       not null
-#  custom_fields :jsonb            not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id          :bigint           not null, primary key
+#  name        :string(50)       not null
+#  description :text             not null
+#  client_code :string(50)       not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 require_relative '../shared_examples/models/crud_operations'
 
@@ -19,14 +18,12 @@ RSpec.describe Client do
     it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false, limit: 50) }
     it { is_expected.to have_db_column(:description).of_type(:text).with_options(null: false) }
     it { is_expected.to have_db_column(:client_code).of_type(:string).with_options(null: false, limit: 50) }
-    it { is_expected.to have_db_column(:custom_fields).of_type(:jsonb) }
   end
 
   describe 'attributes' do
     it { is_expected.to respond_to(:name) }
     it { is_expected.to respond_to(:description) }
     it { is_expected.to respond_to(:client_code) }
-    it { is_expected.to respond_to(:custom_fields) }
   end
 
   describe 'validations' do
@@ -111,6 +108,11 @@ RSpec.describe Client do
         expect(valid_client).not_to be_valid
       end
     end
+  end
+
+  describe 'associations' do
+    it { is_expected.to have_many(:users) }
+    it { is_expected.to have_one(:configuration) }
   end
 
   describe 'CRUD operations' do

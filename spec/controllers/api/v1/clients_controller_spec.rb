@@ -25,25 +25,30 @@ RSpec.describe Api::V1::ClientsController do
   describe 'POST #create' do
     # Note we do not validate the response body here, we do it in the serializer specs
     context 'with valid parameters' do
-      let!(:params) do
+      let!(:params_one) do
         {
           client: {
-            name: 'Client', description: 'Description', client_code: 'C000000001',
-            custom_fields: [
-              { name: 'phone_number', type: 'string' }
-            ]
+            name: 'Client 1', description: 'Description 1', client_code: 'C000000001',
+            configuration: create(:configuration).attributes
+          }
+        }
+      end
+      let!(:params_two) do
+        {
+          client: {
+            name: 'Client 2', description: 'Description 2', client_code: 'C000000002',
+            configuration: create(:configuration).attributes
           }
         }
       end
 
       before do
-        post :create, params:
+        post :create, params: params_one
       end
 
       it 'creates a new client' do
         expect do
-          params[:client].merge!(client_code: 'C000000002')
-          post :create, params:
+          post :create, params: params_two
         end.to change(Client, :count).by(1)
       end
 
@@ -85,7 +90,9 @@ RSpec.describe Api::V1::ClientsController do
 
   describe 'PUT #update' do
     let(:client) { create(:client) }
-    let(:new_attributes) { { name: 'New Client', description: 'Some client' } }
+    let(:configuration) { create(:configuration, client:) }
+
+    let(:new_attributes) { { description: 'Some client' } }
 
     before do
       put :update, params: { id: client.id, client: new_attributes }
@@ -102,7 +109,7 @@ RSpec.describe Api::V1::ClientsController do
 
       it 'updates the requested client' do
         client.reload
-        expect(serialize(client)[:data][:attributes].slice(:name, :description)).to eq(new_attributes)
+        expect(serialize(client)[:data][:attributes].slice(:description)).to eq(new_attributes)
       end
     end
 

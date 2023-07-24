@@ -5,9 +5,11 @@
 # Table name: users
 #
 #  id                 :bigint           not null, primary key
+#  client_id          :bigint           default(1), not null
 #  role_id            :bigint           default(3), not null
 #  first_name         :string(50)       not null
 #  last_name          :string(50)       not null
+#  custom_fields      :jsonb            not null
 #  username           :string(30)       not null
 #  email              :string(100)      not null
 #  omniauth_provider  :string(120)
