@@ -27,6 +27,7 @@ RSpec.describe Api::V1::UsersController do
 
     # Note we do not validate the response body here, we do it in the serializer specs
     context 'with valid parameters' do
+      let(:client) { create(:client) }
       let(:password) { Faker::Internet.password(min_length: 8, max_length: 20) }
 
       before do

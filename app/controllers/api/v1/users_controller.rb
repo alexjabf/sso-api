@@ -46,7 +46,7 @@ module Api
 
       def user_params
         params.require(:user).permit(:first_name, :last_name, :email, :username, :password, :password_confirmation,
-                                     :omniauth_provider, :uid, :role_id)
+                                     :omniauth_provider, :uid, :role_id, :client_id, :access_token, custom_fields: {})
       end
     end
   end

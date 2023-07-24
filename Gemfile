@@ -63,6 +63,7 @@ group :test do
 end
 
 # AUTHENTICATION AND PERMISSIONS
+gem 'auth0' # Authentication
 gem 'cancancan' # Authorization
 gem 'jwt' # JSON Web Tokens
 
@@ -72,6 +73,7 @@ gem 'rbnacl' # Encryption
 
 # FUNCTIONALITY
 gem 'email_validator' # Validates email addresses
+gem 'httparty' # HTTP client
 gem 'jsonapi-serializer' # JSON API serialization
 gem 'will_paginate', '~> 3.3' # Pagination
 

@@ -6,7 +6,6 @@ class CreateClients < ActiveRecord::Migration[7.0]
     t.string :name, null: false, limit: 50
     t.text :description, null: false, limit: 5000
     t.string :client_code, null: false, index: { unique: true }, limit: 50
-    t.jsonb :custom_fields, null: false, default: {}
 
     t.timestamps
   end

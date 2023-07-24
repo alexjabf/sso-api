@@ -17,7 +17,8 @@ RSpec.shared_examples 'data serializer' do |class_name|
     end
 
     it 'includes the correct attributes' do
-      expect(hash_object[:attributes]).to include(serialize(object)[:data][:attributes])
+      response = hash_object[:attributes].deep_symbolize_keys!
+      expect(response).to include(serialize(object)[:data][:attributes].deep_symbolize_keys!)
     end
 
     context 'when there are errors' do

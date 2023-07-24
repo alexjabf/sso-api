@@ -23,9 +23,13 @@ module SerializerSupport
 
   def record_attributes(object)
     attributes = object.attributes.deep_symbolize_keys!.transform_values! { |value| value }
-    return attributes unless @type == 'users'
+    return attributes unless @type == 'users' || @type == 'clients'
 
-    attributes.except!(:encrypted_password).merge!(role_name: object.role.name)
+    if @type == 'users'
+      attributes.except!(:encrypted_password).merge!(role_name: object.role.name, client_name: object.client.name)
+    else
+      attributes.except!(:encrypted_password).merge!(configuration_errors: nil)
+    end
   end
 
   def record_errors(record, data)

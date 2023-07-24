@@ -5,9 +5,11 @@
 # Table name: users
 #
 #  id                 :bigint           not null, primary key
+#  client_id          :bigint           default(1), not null
 #  role_id            :bigint           default(3), not null
 #  first_name         :string(50)       not null
 #  last_name          :string(50)       not null
+#  custom_fields      :jsonb            not null
 #  username           :string(30)       not null
 #  email              :string(100)      not null
 #  omniauth_provider  :string(120)
@@ -24,11 +26,15 @@ class UserSerializer
   include JSONAPI::Serializer
 
   set_type 'users'
-  attributes :id, :first_name, :last_name, :email, :username,
-             :omniauth_provider, :uid, :role_id, :created_at, :updated_at
+  attributes :id, :first_name, :last_name, :email, :username, :custom_fields,
+             :omniauth_provider, :uid, :role_id, :client_id, :created_at, :updated_at
 
   attribute :role_name do |object|
     object&.role&.name
+  end
+
+  attribute :client_name do |object|
+    object&.client&.name
   end
 
   def errors

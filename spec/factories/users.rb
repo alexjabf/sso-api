@@ -5,9 +5,11 @@
 # Table name: users
 #
 #  id                 :bigint           not null, primary key
+#  client_id          :bigint           default(1), not null
 #  role_id            :bigint           default(3), not null
 #  first_name         :string(50)       not null
 #  last_name          :string(50)       not null
+#  custom_fields      :jsonb            not null
 #  username           :string(30)       not null
 #  email              :string(100)      not null
 #  omniauth_provider  :string(120)
@@ -26,6 +28,7 @@ FactoryBot.define do
     password { password }
     password_confirmation { password }
     encrypted_password { RbNaCl::PasswordHash.argon2_str(password) }
+    client { FactoryBot.create(:client) }
     role { FactoryBot.create(:role) }
   end
 end

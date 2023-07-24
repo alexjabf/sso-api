@@ -30,7 +30,7 @@ Role.create(
 )
 
 Role.create(
-  name: 'Job Seeker',
+  name: 'Default User',
   description: 'The Job Seeker role is a type of role that represents individuals ' \
                'who are registered on the application. Users with the ' \
                'role typically have access to features and functionalities ' \
@@ -39,29 +39,43 @@ Role.create(
 )
 
 Rails.logger.debug 'Creating clients...'
-50.times do
-  Client.create(
+50.times do |index|
+  client = Client.create!(
     name: Faker::Company.name,
     description: Faker::Lorem.paragraph,
-    client_code: Faker::Alphanumeric.alphanumeric(number: 10),
-    custom_fields: CUSTOM_FIELDS.shuffle.take(rand(1..CUSTOM_FIELDS.length))
+    client_code: Faker::Alphanumeric.alphanumeric(number: 10)
+  )
+  client_key_frontend = Faker::Alphanumeric.alphanumeric(number: 100)
+  client_secret_frontend = Faker::Alphanumeric.alphanumeric(number: 100)
+  Configuration.create(
+    client_id: client.id,
+    provider: index.zero? ? 'google_oauth2' : OAUTH_PROVIDERS.sample,
+    default_scope: 'email username profile',
+    client_key_frontend: index.zero? ? ENV.fetch('AUTH0_CLIENT_ID_FRONTEND') : client_key_frontend,
+    client_secret_frontend: index.zero? ? ENV.fetch('AUTH0_CLIENT_SECRET_FRONTEND') : client_secret_frontend,
+    client_key: index.zero? ? ENV.fetch('AUTH0_CLIENT_ID') : Faker::Alphanumeric.alphanumeric(number: 100),
+    client_secret: index.zero? ? ENV.fetch('AUTH0_CLIENT_SECRET') : Faker::Alphanumeric.alphanumeric(number: 100),
+    redirect_uri: index.zero? ? ENV.fetch('AUTH0_REDIRECT_URL') : Faker::Internet.url,
+    domain: index.zero? ? ENV.fetch('AUTH0_DOMAIN') : Faker::Internet.domain_name,
+    audience: index.zero? ? ENV.fetch('AUTH0_AUDIENCE') : Faker::Internet.domain_name,
+    custom_fields: [CUSTOM_FIELDS.shuffle.take(rand(1..CUSTOM_FIELDS.length))]
   )
 end
 
 Rails.logger.debug 'Creating users...'
 100.times do
-  password = Faker::Internet.password(min_length: 8, max_length: 20)
   User.create(
+    client_id: Client.all.sample.id,
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,
     email: Faker::Internet.email,
     username: "username#{Faker::Number.within(range: 1..999_999)}",
-    password:,
-    password_confirmation: password,
+    password: ENV.fetch('DEFAULT_PASSWORD'),
+    password_confirmation: ENV.fetch('DEFAULT_PASSWORD'),
     role: Role.all.sample
   )
 end
 
-User.first.update(email: 'admin@email.com', password: ENV.fetch('DEFAULT_PASSWORD'), role_id: 1)
-User.second.update(email: 'client_admin@email.com', password: ENV.fetch('DEFAULT_PASSWORD'), role_id: 2)
-User.third.update(email: 'default_user@email.com', password: ENV.fetch('DEFAULT_PASSWORD'), role_id: 3)
+User.first.update(email: 'admin@email.com', role_id: 1)
+User.second.update(email: 'client_admin@email.com', role_id: 2)
+User.third.update(email: 'default_user@email.com', role_id: 3)

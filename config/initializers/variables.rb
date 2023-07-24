@@ -12,3 +12,5 @@ CUSTOM_FIELDS = [
   { name: 'is_active', type: 'boolean' },
   { name: 'status', type: 'string' }
 ].freeze
+
+OAUTH_PROVIDERS = %w[auth0 okta google_oauth2].freeze

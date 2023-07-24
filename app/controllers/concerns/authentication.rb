@@ -26,7 +26,7 @@ module Authentication
     def valid_token?(authentication_token)
       decoded_token = JWT.decode(authentication_token, Rails.application.secrets.secret_key_base).first
       @current_user = User.includes(:tokens).find_by(id: decoded_token['user_id'])
-      @current_user.invalid_token?(authentication_token) ? false : @current_user
+      @current_user&.invalid_token?(authentication_token) ? false : @current_user
     rescue JWT::DecodeError, ActiveRecord::RecordNotFound
       false
     end

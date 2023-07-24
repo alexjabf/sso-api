@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_20_041514) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_20_220830) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,10 +18,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_20_041514) do
     t.string "name", limit: 50, null: false
     t.text "description", null: false
     t.string "client_code", limit: 50, null: false
-    t.jsonb "custom_fields", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_code"], name: "index_clients_on_client_code", unique: true
+  end
+
+  create_table "configurations", force: :cascade do |t|
+    t.bigint "client_id", null: false
+    t.string "provider", default: "google_oauth2", null: false
+    t.string "default_scope", default: "email username profile", null: false
+    t.jsonb "custom_fields", default: {}, null: false
+    t.string "redirect_uri", null: false
+    t.string "domain", null: false
+    t.string "audience", null: false
+    t.string "client_key_frontend", null: false
+    t.string "client_secret_frontend", null: false
+    t.string "client_key", null: false
+    t.string "client_secret", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_configurations_on_client_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -43,9 +59,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_20_041514) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.bigint "client_id", default: 1, null: false
     t.bigint "role_id", default: 3, null: false
     t.string "first_name", limit: 50, null: false
     t.string "last_name", limit: 50, null: false
+    t.jsonb "custom_fields", default: {}, null: false
     t.string "username", limit: 30, null: false
     t.string "email", limit: 100, null: false
     t.string "omniauth_provider", limit: 120
@@ -53,11 +71,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_20_041514) do
     t.string "encrypted_password", limit: 120, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_users_on_client_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["role_id"], name: "index_users_on_role_id"
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "configurations", "clients"
   add_foreign_key "tokens", "users"
+  add_foreign_key "users", "clients"
   add_foreign_key "users", "roles"
 end
